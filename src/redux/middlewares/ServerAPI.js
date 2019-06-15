@@ -1,6 +1,5 @@
 import { getAllGiftsSuccess } from "../actions";
 
-
 export default store => next => action => {
   if (action.type !== 'GET_ALL_GIFTS') return next(action)
 
@@ -8,11 +7,9 @@ export default store => next => action => {
     ...action,
     type: action.type + '_REQUEST'
   })
-  console.log("fethcing")
-  fetch('https://fys-demo.herokuapp.com/getStuff')
+  fetch(`${process.env.REACT_APP_SERVER}/getStuff`)
     .then(data => data.json())
     .then(data => {
-      console.log(data)
       store.dispatch(getAllGiftsSuccess(data))
     })
     .catch(err => {

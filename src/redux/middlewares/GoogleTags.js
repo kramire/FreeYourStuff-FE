@@ -1,8 +1,6 @@
-import { getTagsFromGoogleSuccess } from '../actions'
+import { getTagsFromGoogleSuccess } from '../actions';
 
-
-const GOOGLE_KEY = 'AIzaSyBzBvfaosQJN9iUMMRAPD9ATnIPjofrCto'
-const GOOGLE_VISION = `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_KEY}`
+const googleVisionUrl = `${process.env.REACT_APP_GOOGLE_VISION_API}key=${process.env.REACT_APP_GOOGLE_KEY}`;
 
 const googleVisionRequestFormat = (url) => {
   return {
@@ -22,37 +20,35 @@ const googleVisionRequestFormat = (url) => {
       }
     ]
   }
-}
+};
 
 export default store => next => action => {
-  if (action.type !== 'GET_TAGS_FROM_GOOGLE') return next(action)
+  if (action.type !== 'GET_TAGS_FROM_GOOGLE') return next(action);
 
   next({
     ...action,
     type: action.type + '_REQUEST'
+  });
+
+  const tags = [];
+
+  fetch(googleVisionUrl, {
+    method: 'POST',
+    body: JSON.stringify(googleVisionRequestFormat(action.data)),
+    headers: {
+      'Content-Type':'application/json'
+    }
   })
-
-  let tags = []
-
-    fetch(GOOGLE_VISION, {
-      method: 'POST',
-      body: JSON.stringify(googleVisionRequestFormat(action.data)),
-      headers: {
-        'Content-Type':'application/json'
-      }
+  .then(res => res.json())
+  .then(res => res.responses[0].labelAnnotations)
+  .then(res => res.forEach(item => {
+    tags.push(item.description)
+  }))
+  .then(() => store.dispatch(getTagsFromGoogleSuccess(tags)))
+  .catch(err => {
+    next({
+      ...action,
+      type: action.type + '_FAILURE'
     })
-    .then(res => res.json())
-    .then(res => res.responses[0].labelAnnotations)
-    .then(res => res.forEach(item => {
-      tags.push(item.description)
-    }))
-    .then(() => store.dispatch(getTagsFromGoogleSuccess(tags)))
-    
-    .catch(err => {
-      next({
-        ...action,
-        type: action.type + '_FAILURE'
-      })
-    })
-
-  }
+  });
+};
