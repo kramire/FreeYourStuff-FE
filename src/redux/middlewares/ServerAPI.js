@@ -18,5 +18,5 @@ export default store => next => action => {
         type: action.type + '_FAILURE'
       })
     })
-  
+
 }

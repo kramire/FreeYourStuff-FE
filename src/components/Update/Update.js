@@ -19,12 +19,12 @@ class Update extends Component {
     formData.append('file', picture)
     formData.append('upload_preset', CLOUDINARY_PRESET)
     formData.append('api_key', '981645852329497')
-    
+
     this.props.urlFromCloudinary(formData)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.cloudinaryURL.length > 1 && this.props.needTags) { 
+    if(this.props.cloudinaryURL.length > 1 && this.props.needTags) {
       this.props.getTagsFromGoogle(this.props.cloudinaryURL)
     }
   }
@@ -61,7 +61,7 @@ class Update extends Component {
   }
 
   constructor(props) {
-    super(props) 
+    super(props)
     this.state = {
       deadTags:[],
       finished: false
@@ -73,16 +73,16 @@ class Update extends Component {
 
     if (this.state.finished === true) {
       return <Fireworks />
-    } else if (this.props.cloudinaryURL.length === 0) { 
+    } else if (this.props.cloudinaryURL.length === 0) {
     return (
       <div className="updater">
 
       <span className="updateGift"> click to update </span>
       <input type="file" id="fileuploader" name="file" accept="*" onChange={this.updatePic}/>
       <label htmlFor="fileuploader">
-        <img src={this.props.gift ? this.props.gift.picture : null} 
+        <img src={this.props.gift ? this.props.gift.picture : null}
         className="updateGlow"
-        onTransitionEnd={this.glowImage} 
+        onTransitionEnd={this.glowImage}
         ref="glowyImage"
         alt="gift To Update"/>
       </label>
@@ -101,7 +101,7 @@ class Update extends Component {
           <div className="tags">
             {this.props.googleTags.map((tag, i) => {
               return <p key={i}
-                        id={tag} 
+                        id={tag}
                         onClick={this.killTag}
                         onTransitionEnd={this.dissapear}> {tag} </p>
             })}
@@ -127,7 +127,7 @@ const mapStateToProps = (state) => ({
   needTags: state.needTags,
   address: state.address,
   newGift: state.newGift,
- 
+
 })
 
 const mapDispatchToProps = (dispatch) => ({

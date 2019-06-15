@@ -22,6 +22,7 @@ export default store => next => action => {
     store.dispatch(urlFromCloudinarySuccess(url));
   })
   .catch(err => {
+    console.log('here')
     next({
       ...action,
       type: action.type + '_FAILURE'
