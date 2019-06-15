@@ -34,12 +34,12 @@ class App extends Component {
 componendDidUpdate() {
   if (this.props.newPhoto) {
   }
-} 
+}
 
 
 
-myList = () =>  <StuffList stuffList={this.props.gifts} myMap={this.myMap} myLocation={this.props.location} /> 
-myMap = (e) => <MapContainer stuffList={this.props.gifts} location={this.props.location} /> 
+myList = () =>  <StuffList stuffList={this.props.gifts} myMap={this.myMap} myLocation={this.props.location} />
+myMap = (e) => <MapContainer stuffList={this.props.gifts} location={this.props.location} />
 myUpdate = () =>  <Update gift={this.props.gifts[0]} />
 myLandingPage = () => <LandingPage closest={this.props.gifts[0]} />
 
@@ -50,7 +50,7 @@ myLandingPage = () => <LandingPage closest={this.props.gifts[0]} />
     else {
       return (
         <div className="App">
-          
+
           <Route path='/' component={Header}/>
           <Route exact path='/' render={this.myLandingPage} />
           <Route path='/list' render={this.myList} />

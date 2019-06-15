@@ -8,23 +8,23 @@ import './AddStuff.css'
 import Fireworks from '../Fireworks/Fireworks';
 import Loading from '../loading/Loading';
 
-const CLOUDINARY_PRESET = 'xnny1dgk'
+const CLOUDINARY_PRESET = 'evrkqsnp'
 
 class AddStuff extends Component {
 
   uploadPic = (files, event) => {
     let picture
     if (files[0]) picture = files[0]
-    else picture = files.target.files[0]    
+    else picture = files.target.files[0]
     let formData = new FormData()
     formData.append('file', picture)
     formData.append('upload_preset', CLOUDINARY_PRESET)
-    formData.append('api_key', '981645852329497')
+    formData.append('api_key', process.env.REACT_APP_CLOUDINARY_KEY)
     this.props.urlFromCloudinary(formData)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.cloudinaryURL.length > 1 && this.props.needTags) { 
+    if(this.props.cloudinaryURL.length > 1 && this.props.needTags) {
       this.props.getTagsFromGoogle(this.props.cloudinaryURL)
       this.props.getGeocode(this.props.location)
     }
@@ -81,7 +81,7 @@ class AddStuff extends Component {
   }
 
   dissapear = (e) => e.target.classList.add('dead')
-  
+
 
   render() {
     if (this.state.finished === true) { return <Fireworks />
@@ -92,7 +92,7 @@ class AddStuff extends Component {
       // };
       // return (
       //   <div className="cameraLand">
-      //     <Webcam 
+      //     <Webcam
       //     audio={false}
       //     ref={this.setRef}
       //     screenshotFormat='image/jpeg'
@@ -107,7 +107,7 @@ class AddStuff extends Component {
           <div className="tags">
             {this.props.googleTags.map((tag, i) => {
               return <p key={i}
-                        id={tag} 
+                        id={tag}
                         onClick={this.killTag}
                         onTransitionEnd={this.dissapear}> {tag} </p>
             })}
@@ -118,7 +118,7 @@ class AddStuff extends Component {
     } else if (this.props.newGift.picture) {
 
       return(<h1> SUCcESS </h1>)
-    
+
     } else if (this.props.cloudinaryURL.length === 0) {
       return (
         <div className="uploader">
@@ -142,7 +142,7 @@ const mapStateToProps = (state) => ({
   needTags: state.needTags,
   address: state.address,
   newGift: state.newGift,
- 
+
 })
 
 const mapDispatchToProps = (dispatch) => ({

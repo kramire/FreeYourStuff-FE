@@ -5,16 +5,16 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import './Map.css'
 import MapSlider from '../MapSlider/MapSlider';
 import Loading from '../loading/Loading';
- 
+
 export class MapContainer extends Component {
 
   addMarker = (props) => {
     return (
       <Marker key={props._id}
       position={props.location}
-      ref={props.location} 
+      ref={props.location}
       title={props.tags.join(" ")}
-      onClick={this.onMarkerClick} 
+      onClick={this.onMarkerClick}
       />
     )
   }
@@ -43,7 +43,7 @@ export class MapContainer extends Component {
   };
 
   expandSlider = (e) => {
-    let pin;    
+    let pin;
     this.props.stuffList.forEach(pic => {
       if (pic.picture === e.target.src) pin = pic
     })
@@ -82,9 +82,9 @@ export class MapContainer extends Component {
       initialCenter: {lat: 41.3851, lng: 2.1734},
       center: {},
     }
-    
+
   }
-  
+
   render() {
 
     const style = {
@@ -97,15 +97,15 @@ export class MapContainer extends Component {
      else return (
       <div className="mapDiv">
 
-        <Map google={this.props.google} 
+        <Map google={this.props.google}
               onClick={this.onMapClicked}
-              zoom={13} 
-              className="map" 
+              zoom={13}
+              className="map"
               style={style}
               initialCenter={this.state.initialCenter}
               center={this.state.center}>
 
-          
+
           {this.props.stuffList.map(item => {
             return this.addMarker(item)
           })}
@@ -123,12 +123,12 @@ export class MapContainer extends Component {
         <MapSlider stuffList={this.props.stuffList} expandSlider={this.expandSlider}/>
 
       </div>
-      
+
     );
   }
-} 
+}
 
-const mapDispatchToProps = (dispatch) => {}
+const mapDispatchToProps = (dispatch) => ({})
 
 const mapStateToProps = (state) => ({
 
@@ -141,7 +141,7 @@ const mapStateToProps = (state) => ({
 })
 
 const wrappedMap = GoogleApiWrapper({
-  apiKey: 'AIzaSyBzBvfaosQJN9iUMMRAPD9ATnIPjofrCto'
+  apiKey: process.env.REACT_APP_GOOGLE_KEY
 })(MapContainer)
 
 export default connect(mapStateToProps, mapDispatchToProps)(wrappedMap);
