@@ -1,4 +1,4 @@
-import helpers from '../helpers/helpers'
+import helpers from '../helpers/helpers';
 
 const initialState = {
   gifts: [],
@@ -11,8 +11,8 @@ const initialState = {
   googleTags: [],
   address: "",
   needTags: true,
-  newGift: {},
-}
+  newGift: {}
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -33,9 +33,6 @@ const reducer = (state = initialState, action) => {
     case 'GET_ALL_GIFTS_FAILURE':
       return state
 
-
-
-
     case 'GET_LOCATION':
       return  {
         ...state,
@@ -48,25 +45,18 @@ const reducer = (state = initialState, action) => {
         loading: true
       }
 
-
-
-      
-
     case 'SORT_ALL_GIFTS':
-      console.log("TRING TO SORT")
-      let data = state.gifts;
+      const data = state.gifts;
       data.forEach(gift => {
         if (gift.location) gift.distance = helpers.getDistance(gift.location.lat, gift.location.lng, state.location.lat, state.location.lng)
         else gift.distance = 9999
-      })
-      data.sort((a,b) => a.distance - b.distance)
+      });
+      data.sort((a,b) => a.distance - b.distance);
       return  {
         ...state,
         gifts: data,
-        sorted: true,
+        sorted: true
       }
-
-
 
     case 'LIST_TO_MAP':
       return  {
@@ -74,35 +64,31 @@ const reducer = (state = initialState, action) => {
         listToMapLocation: action.data
       }
 
-
-
     case 'URL_FROM_CLOUDINARY_REQUEST':
       return  {
         ...state,
-        waitingForApi: true,
+        waitingForApi: true
       }
 
     case 'URL_FROM_CLOUDINARY_SUCCESS':
       return {
         ...state,
         waitingForApi: false,
-        cloudinaryURL: action.data,
+        cloudinaryURL: action.data
       }
-
 
     case 'GET_TAGS_FROM_GOOGLE':
       return {
         ...state,
-        waitingForApi: true,
+        waitingForApi: true
       }
 
     case 'GET_TAGS_FROM_GOOGLE_SUCCESS':
       return {
         ...state,
         googleTags: action.data,
-        needTags: false,
+        needTags: false
       }
-
 
     case 'GET_GEOCODE_REQUEST':
       return state
@@ -119,7 +105,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         gifts: [action.data, ...state.gifts]
       }
-    
 
     case 'NEW_GIFT_TO_DB_SUCCESS':
       return {
@@ -128,14 +113,11 @@ const reducer = (state = initialState, action) => {
         googleTags: [],
         finalTags: [],
         needTags: true,
-        address: "",
+        address: ""
       }
-
 
     case 'UPDATE_GIFT_IN_DB_REQUEST':
     return state
-
-  
 
     case 'UPDATE_GIFT_IN_DB_SUCCESS':
       return {
@@ -143,14 +125,12 @@ const reducer = (state = initialState, action) => {
         cloudinaryURL: "",
         googleTags: [],
         finalTags: [],
-        needTags: true,
+        needTags: true
       }
-
 
     default:
       return state
   }
-
 }
 
 export default reducer;

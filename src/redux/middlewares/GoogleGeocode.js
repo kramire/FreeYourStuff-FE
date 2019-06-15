@@ -1,29 +1,25 @@
 import { getGeocodeSuccess } from "../actions";
 
-const GOOGLE_KEY = 'AIzaSyBzBvfaosQJN9iUMMRAPD9ATnIPjofrCto'
-
-
-
 export default store => next => action => {
 
-  if(action.type !== 'GET_GEOCODE') return next(action)
+  if(action.type !== 'GET_GEOCODE') return next(action);
+
   next ({
     ...action,
     type: action.type + '_REQUEST'
-  })
+  });
 
-  let lat = action.data.lat
-  let lng = action.data.lng
+  const lat = action.data.lat;
+  const lng = action.data.lng;
 
-  fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_KEY}`)
+  fetch(`${process.env.REACT_APP_GOOGLE_MAP_API}latlng=${lat},${lng}&key=${process.env.REACT_APP_GOOGLE_KEY}`)
   .then(res => res.json())
   .then(res => res.results[0].formatted_address)
   .then(res => store.dispatch(getGeocodeSuccess(res)))
-
   .catch(err => {
     next({
       ...action,
       type: action.type + '_FAILURE'
     })
-  })
-}
+  });
+};
